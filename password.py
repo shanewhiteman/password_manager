@@ -5,7 +5,15 @@ account_dict = {}
 special_characters = ['!','@','#','$','%','&','*']
 i = 0
 
+#Creates account, Password, and Security Question and stores them.
 def account_create():
+    sec_questions_dict = {
+        "1":"What's your dog's name",
+        "2":"What's your cat's name",
+        "3":"What's your best friend's middle name",
+        "4":"some fourth option"
+     }
+
     print("-"*18, "\nAccount Creation!"), print("-"*18)
     username = input("Enter a Username:\n")  
     password = ''
@@ -17,22 +25,18 @@ def account_create():
         else:
             break
         
-    print(security_questions())
-    security = input("Please choose a security question (Type in corresponding number):\n")
-
-
-
-def security_questions():
-    sec_questions_dict = {
-        "1":"What's your dog's name",
-        "2":"What's your cat's name",
-        "3":"What's your best friend's middle name",
-        "4":"some fourth option"
-     }
-
     for key,val in sec_questions_dict.items():
         print(key,":",val)
 
+    #take in a key -> print out the value -> ask for input
+    security_choice = input("Please choose a security question (Type in corresponding number):\n")
+    
+    for security_choice in sec_questions_dict:
+        value = sec_questions_dict[security_choice]
+        print(value)
+        break
+    save_answer = input("")
+    return
 
 def password_manager():
     print("some third thing")
