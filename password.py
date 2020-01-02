@@ -1,36 +1,26 @@
 #import
 
-#dictionaries for storing accounts,and passwords
+#dictionaries for storing accounts and passwords
 account_dict = {}
 special_characters = ['!','@','#','$','%','&','*']
 i = 0
 
 def account_create():
     print("-"*18, "\nAccount Creation!"), print("-"*18)
-    username = input("Enter a Username:\n")
-    password = input("Enter a Password:\n")
-    if len(password) < 6:
-        print("Password has to be 6 characters or more.")
+    username = input("Enter a Username:\n")  
+    password = ''
+
+    while True:
+        if len(password) < 6:
+            print("Password has to be 6 characters or more.")
+            password = input("Enter a Password:\n")
+        else:
+            break
+        
     print(security_questions())
     security = input("Please choose a security question (Type in corresponding number):\n")
-    
 
 
-    #fail parameters
-    if len(password) < 6:
-        print("Password has to be 6 characters or more.")
-    
-    #elif password != i:
-        #while True:
-            #i+1
-            #if password == special_characters[i]:
-                #break
-            #elif password != special_characters[i]:
-                #print("Password has to have atleast 1 special character")
-                #break
-    #elif password < numbers in range(11):
-        #print("password has to have a number")
-    
 
 def security_questions():
     sec_questions_dict = {
@@ -39,7 +29,10 @@ def security_questions():
         "3":"What's your best friend's middle name",
         "4":"some fourth option"
      }
-    return
+
+    for key,val in sec_questions_dict.items():
+        print(key,":",val)
+
 
 def password_manager():
     print("some third thing")
@@ -50,9 +43,9 @@ def main():
     answer = input("Do want to create an account? Type 'yes' or 'no': ")
     accepted_answers = ['yes','no']
 
-    if answer == accepted_answers[0]:
+    if answer == 'yes':
         account_create()
-    elif answer == accepted_answers[1]:
+    elif answer == 'no':
         password_manager()
     else:
         print("Incorrect use.")
