@@ -1,9 +1,7 @@
 import random
-import string
+import shane_char
 
 #dictionaries for storing accounts and passwords
-#special_characters = ['!','@','#','$','%','&','*']
-
 # Creates account, Password, and Security Question and stores them.
 def account_create():
     #Have a username and password -> security answer
@@ -71,17 +69,18 @@ def password_randomizer_query():
 
 # Generates a randomized password using letters and digits
 def random_pass():
-    letters_and_num = string.ascii_letters + string.digits
-    password = random.choice(string.ascii_lowercase)
-    password += random.choice(string.ascii_uppercase)
+    string = shane_char.ascii_characters_and_num()
+    letters_and_num = string.letters + string.digits
+    password = random.choice(string.lowercase)
+    password += random.choice(string.uppercase)
     password += random.choice(string.digits)
 
     for characters in range(6):
         password += random.choice(letters_and_num)
 
-    passwordList = list(password)
-    random.SystemRandom().shuffle(passwordList)
-    password = ''.join(passwordList)
+    password_list = list(password)
+    random.SystemRandom().shuffle(password_list)
+    password = ''.join(password_list)
 
     return password
 
