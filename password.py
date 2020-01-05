@@ -3,9 +3,8 @@ import string
 
 #dictionaries for storing accounts and passwords
 #special_characters = ['!','@','#','$','%','&','*']
-#i = 0
 
-#Creates account, Password, and Security Question and stores them.
+# Creates account, Password, and Security Question and stores them.
 def account_create():
     #Have a username and password -> security answer
     #account_dict = {}
@@ -32,6 +31,7 @@ def account_create():
 
     return
 
+# Asks user to pick a question and saves the answer
 def security_questions():
      sec_questions_dict = {
          "1":"What's your dog's name",
@@ -53,7 +53,7 @@ def security_questions():
 
      return question_answer
 
-
+# Asks to generate a randomized password
 def password_randomizer_query():
     accepted_answers = 'yes','no'
 
@@ -69,6 +69,7 @@ def password_randomizer_query():
 
     return rand_answer
 
+# Generates a randomized password using letters and digits
 def random_pass():
     letters_and_num = string.ascii_letters + string.digits
     password = random.choice(string.ascii_lowercase)
@@ -85,9 +86,9 @@ def random_pass():
     return password
 
 
-
+# Manages and Rates your passwords.
 def password_manager():
-    print("Ask if user would like to create a password or have one generated")
+    print("I don't do anything yet!")
 
 
 def main():
