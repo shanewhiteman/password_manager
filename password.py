@@ -1,4 +1,5 @@
-#import
+import random
+import string
 
 #dictionaries for storing accounts and passwords
 #special_characters = ['!','@','#','$','%','&','*']
@@ -23,11 +24,12 @@ def account_create():
         password = input("Enter a Password:\n")
         if len(password) < 6:
             print("Password has to be 6 characters or more.")
+            continue
         else:
             break
 
     security_questions()
-    
+
     return
 
 def security_questions():
@@ -58,7 +60,7 @@ def password_randomizer_query():
     while True:
         rand_answer = input("Do you want a randomized password? ('yes' or 'no'):\n")
         if rand_answer == 'yes':
-            random_pass()
+            print("Your random pass is: " + random_pass())
             break
         elif rand_answer == 'no':
             break
@@ -68,8 +70,21 @@ def password_randomizer_query():
     return rand_answer
 
 def random_pass():
-    print("Hey im random pass")
-    return
+    letters_and_num = string.ascii_letters + string.digits
+    password = random.choice(string.ascii_lowercase)
+    password += random.choice(string.ascii_uppercase)
+    password += random.choice(string.digits)
+
+    for characters in range(6):
+        password += random.choice(letters_and_num)
+
+    passwordList = list(password)
+    random.SystemRandom().shuffle(passwordList)
+    password = ''.join(passwordList)
+
+    return password
+
+
 
 def password_manager():
     print("Ask if user would like to create a password or have one generated")
