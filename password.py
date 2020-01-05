@@ -6,7 +6,7 @@
 
 #Creates account, Password, and Security Question and stores them.
 def account_create():
-    #Have a username and password -> security queston and answer
+    #Have a username and password -> security answer
     #account_dict = {}
 
     print("-"*18, "\nAccount Creation!"), print("-"*18)
@@ -18,8 +18,8 @@ def account_create():
             continue
         else:
             break
-
-    while True:
+    
+    while password_randomizer_query() == 'no':
         password = input("Enter a Password:\n")
         if len(password) < 6:
             print("Password has to be 6 characters or more.")
@@ -27,8 +27,6 @@ def account_create():
             break
 
     security_questions()
-    
-    password_randomizer()
     
     return
 
@@ -54,11 +52,24 @@ def security_questions():
      return question_answer
 
 
-def password_randomizer():
-    rand_answer = input("Do you want a randomized password? ('yes' or 'no'):\n")
-    accepted_answers = ['yes','no']
+def password_randomizer_query():
+    accepted_answers = 'yes','no'
 
-    print("I work cause I want to!")
+    while True:
+        rand_answer = input("Do you want a randomized password? ('yes' or 'no'):\n")
+        if rand_answer == 'yes':
+            random_pass()
+            break
+        elif rand_answer == 'no':
+            break
+        elif rand_answer != accepted_answers:
+            print("Incorrect use.")
+
+    return rand_answer
+
+def random_pass():
+    print("Hey im random pass")
+    return
 
 def password_manager():
     print("Ask if user would like to create a password or have one generated")
