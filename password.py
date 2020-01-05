@@ -6,32 +6,25 @@
 
 #Creates account, Password, and Security Question and stores them.
 def account_create():
-    sec_questions_dict = {
-        "1":"What's your dog's name",
-        "2":"What's your cat's name",
-        "3":"What's your best friend's middle name",
-        "4":"some fourth option"
-     }
+
     #Have a username and password -> security queston and answer
     account_dict = {}
 
     print("-"*18, "\nAccount Creation!"), print("-"*18)
 
-    username = ''
     while True:
-        if len(username) >= 5:
-            break
+        username = input("Enter a Username:\n")
+        if len(username) < 5:
+            print("Username has to be 5 characters or more.")
+            continue
         else:
-            username = input("Enter a Username:\n")
-            if len(username) < 5:
-                print("Username has to be 5 characters or more.")
+            break
     
     #Password Randomizer Query 
     rand_answer = input("Do you want a randomized password? ('yes' or 'no'):\n")
     accepted_answers = ['yes','no']
 
     if rand_answer == 'yes':
-        password_randomizer()
 
     #Continue regular program   
     elif rand_answer == 'no':
@@ -45,18 +38,33 @@ def account_create():
                     print("Password has to be 6 characters or more.")
                     break
 
-        print("-"*26)
-        for key,val in sec_questions_dict.items():
-            print(key,":",val)
-        print("-"*26)
-        #take in a key -> print out the value -> ask for input
-        security_choice = input("Please choose a security question (Type in corresponding number):\n")
-    
-        value = sec_questions_dict[security_choice]
-        print(value)
-        question_answer = input("")
+
+    # handle_security_questions()
 
     return
+
+# def handle_security_questions() string:
+#     sec_questions_dict = {
+#         "1":"What's your dog's name",
+#         "2":"What's your cat's name",
+#         "3":"What's your best friend's middle name",
+#         "4":"some fourth option"
+#      }
+
+#     print("-"*26)
+#     for key,val in sec_questions_dict.items():
+#         print(key,":",val)
+#     print("-"*26)
+#     #take in a key -> print out the value -> ask for input
+#     security_choice = input("Please choose a security question (Type in corresponding number):\n")
+
+#     value = sec_questions_dict[security_choice]
+#     print(value)
+#     question_answer = input("")
+
+#     return question_answer
+
+
 def password_randomizer():
     print("I work cause I want to!")
 
@@ -77,3 +85,5 @@ def main():
         print("Incorrect use.")
         
 main()
+
+#encryption and encoding
