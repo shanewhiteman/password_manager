@@ -103,3 +103,5 @@ def main():
         print("Incorrect use.")
         
 main()
+
+#encryption and encoding
