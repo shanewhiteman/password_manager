@@ -1,13 +1,10 @@
-#import
+import random
+import shane_char
 
 #dictionaries for storing accounts and passwords
-#special_characters = ['!','@','#','$','%','&','*']
-#i = 0
-
-#Creates account, Password, and Security Question and stores them.
-
+# Creates account, Password, and Security Question and stores them.
 def account_create():
-    #Have a username and password -> security queston and answer
+    #Have a username and password -> security answer
     #account_dict = {}
 
     print("-"*18, "\nAccount Creation!"), print("-"*18)
@@ -19,22 +16,20 @@ def account_create():
             continue
         else:
             break
-
-    while True:
+    
+    while password_randomizer_query() == 'no':
         password = input("Enter a Password:\n")
         if len(password) < 6:
             print("Password has to be 6 characters or more.")
+            continue
         else:
             break
 
     security_questions()
-    
-    password_randomizer()
 
-
-    # handle_security_questions()
     return
 
+# Asks user to pick a question and saves the answer
 def security_questions():
      sec_questions_dict = {
          "1":"What's your dog's name",
@@ -56,15 +51,43 @@ def security_questions():
 
      return question_answer
 
+# Asks to generate a randomized password
+def password_randomizer_query():
+    accepted_answers = 'yes','no'
 
-def password_randomizer():
-    rand_answer = input("Do you want a randomized password? ('yes' or 'no'):\n")
-    accepted_answers = ['yes','no']
+    while True:
+        rand_answer = input("Do you want a randomized password? ('yes' or 'no'):\n")
+        if rand_answer == 'yes':
+            print("Your random pass is: " + random_pass())
+            break
+        elif rand_answer == 'no':
+            break
+        elif rand_answer != accepted_answers:
+            print("Incorrect use.")
 
-    print("I work cause I want to!")
+    return rand_answer
 
+# Generates a randomized password using letters and digits
+def random_pass():
+    string = shane_char.ascii_characters_and_num()
+    letters_and_num = string.letters + string.digits
+    password = random.choice(string.lowercase)
+    password += random.choice(string.uppercase)
+    password += random.choice(string.digits)
+
+    for characters in range(6):
+        password += random.choice(letters_and_num)
+
+    password_list = list(password)
+    random.SystemRandom().shuffle(password_list)
+    password = ''.join(password_list)
+
+    return password
+
+
+# Manages and Rates your passwords.
 def password_manager():
-    print("Ask if user would like to create a password or have one generated")
+    print("I don't do anything yet!")
 
 
 def main():
