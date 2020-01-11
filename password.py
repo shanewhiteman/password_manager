@@ -1,14 +1,29 @@
 import random
-import shane_char
+#importing personal mod for fun
+import shane_char 
 
-#Have a (username : password)
+# class account_stuff:
+#     def __init__(self):
+#         self.username = ''
+#         self.password = ''
+#         self.sec_question = ''
+#         self.sec_answer = ''
+
+# Account1(username) : {username : jim
+        #               password : rand_pass 
+        #               sec_quest: some_key
+        #               sec_answ : woofles}
+
+# Account2(username) : {username : karen
+        #               password : rand_pass 
+        #               sec_answ : some_key
+        #               sec_answ : idk}
+
 account_dict = {}
-#Have a (username : security question answer)
-forget_pass_dict = {}
+account_info_dict = {}
 
-# Creates account, Password, and Security Question and stores them.
 def account_create():
-
+    #user_info = account_stuff
     print("-"*18, "\nAccount Creation!"), print("-"*18)
 
     while True:
@@ -17,6 +32,7 @@ def account_create():
             print("Username has to be 5 characters or more.")
             continue
         else:
+            account_info_dict["Username"] = username
             break
 
 
@@ -27,16 +43,12 @@ def account_create():
                 print("Password has to be 6 characters or more.")
                 continue
             else:
+                account_info_dict["Password"] = password
                 break
     
-    account_dict[username] = password
+    account_dict[username] = account_info_dict
 
     security_questions()
-
-    #account_save()
-
-    #forget_pass_save()
-
 
     account_save()
 
@@ -62,7 +74,10 @@ def security_questions():
      print(value)
      question_answer = input("")
 
-     return question_answer
+     account_info_dict["Security Question"] = value
+     account_info_dict["Secuirty Answer"] = question_answer
+
+     return value, question_answer
 
 # Asks to generate a randomized password
 def password_randomizer_query():
@@ -72,14 +87,13 @@ def password_randomizer_query():
         rand_answer = input("Do you want a randomized password? ('yes' or 'no'):\n")
         if rand_answer == 'yes':
             gen_pass = random_pass()
+            account_info_dict["Password"] = gen_pass
             print("Your random pass is: " + gen_pass)
             break
         elif rand_answer == 'no':
             break
         elif rand_answer != accepted_answers:
             print("Incorrect use.")
-
-
 
     return rand_answer
 
@@ -103,25 +117,22 @@ def random_pass():
 # Saves and stores account
 def account_save():
 
-
-    # account_file = open('account.txt','w')
-    # account_file.write(str(account_dict))
-    # account_file.close()
+    account_file = open('account.txt','w')
+    account_file.write(str(account_dict))
+    account_file.close()
 
     return account_dict
 
-def forget_pass_save():
+#lists account dict
+def list_account():
+    account_file_read = open('account.txt','r')
+    print(account_file_read.read())
 
-    # forg_pass_user = account_create()
-    # forg_pass_answer = security_questions()
+# Recover exisiting account
+def account_recovery():
+    print("What is your username?")
+    
 
-    # forget_pass_file = open('forgottenpass.txt','w')
-    # forget_pass_file.write(str(forget_pass_dict))
-    # forget_pass_file.close()
-
-    return forget_pass_dict
-
-#def forgot_pass():
 
 
 # Manages and Rates your passwords.
@@ -132,12 +143,14 @@ def password_manager():
 def main():
     print("Hey welcome to Password Manager!")
     answer = input("Do want to create an account? Type 'yes' or 'no': ")
-    accepted_answers = 'yes','no'
+    accepted_answers = 'yes','no','read'
 
     if answer == 'yes':
         account_create()
     elif answer == 'no':
-        password_manager()
+        account_recovery()
+    elif answer == 'read':
+        list_account()
     else:
         print("Incorrect use.")
         
