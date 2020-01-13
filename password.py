@@ -130,7 +130,23 @@ def list_account():
 
 # Recover exisiting account
 def account_recovery():
+    account_file = open('account.txt','r')
+    #contents = account_file.read()
+    info = account_info_dict
     print("What is your username?")
+    user_answer = input("")
+    for attempts in range(6):
+        if user_answer == info.get("Username"):
+            print(info.get("Security Question"))
+            security_answer = input("")
+            if security_answer == info.get("Security Answer"):
+                print(info.get("Password"))
+            else:
+                attempts += 1
+    
+    account_file.close()
+
+    return
     
 
 

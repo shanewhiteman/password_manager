@@ -5,8 +5,25 @@
 <strike>Create an account, Store it</strike>
 <strike>Make a password, Store it to the account</strike>
 <strike>Create a list of general questions</strike>
-Save question and answer
-Save Account.
+<strike>Save question and answer<strike>
+<strike>Save Account.<strike>
+
+------------------
+# Account Recovery
+------------------
+Create a "Forgot Pass" function:
+
+<strike>Ask user for username<strike>
+
+Return to user security question under the account
+
+Ask for user to answer (expecting answer saved to the account)
+
+If answer is correct, return user password.
+
+(Optional) Ask if user wants to create/generate a new password
+
+If answer is incorrect give user 4 more tries(5 tries total), kill function.
 
 ---------------------------
 # Password Managing Skeleton
