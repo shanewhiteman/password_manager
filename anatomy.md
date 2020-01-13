@@ -15,15 +15,15 @@ Create a "Forgot Pass" function:
 
 <strike>Ask user for username<strike>
 
-Return to user security question under the account
+<strike>Return to user security question under the account<strike>
 
-Ask for user to answer (expecting answer saved to the account)
+<strike>Ask for user to answer (expecting answer saved to the account)<strike>
 
-If answer is correct, return user password.
+<strike>If answer is correct, return user password.<strike>
 
 (Optional) Ask if user wants to create/generate a new password
 
-If answer is incorrect give user 4 more tries(5 tries total), kill function.
+<strike>If answer is incorrect give user 4 more tries(5 tries total), kill function.<strike>
 
 ---------------------------
 # Password Managing Skeleton

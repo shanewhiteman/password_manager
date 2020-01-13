@@ -1,6 +1,7 @@
 import random
 #importing personal mod for fun
 import shane_char 
+import re
 
 # class account_stuff:
 #     def __init__(self):
@@ -22,6 +23,7 @@ import shane_char
 account_dict = {}
 account_info_dict = {}
 
+#<-- First major function -->
 def account_create():
     #user_info = account_stuff
     print("-"*18, "\nAccount Creation!"), print("-"*18)
@@ -75,7 +77,7 @@ def security_questions():
      question_answer = input("")
 
      account_info_dict["Security Question"] = value
-     account_info_dict["Secuirty Answer"] = question_answer
+     account_info_dict["Security Answer"] = question_answer
 
      return value, question_answer
 
@@ -127,24 +129,88 @@ def account_save():
 def list_account():
     account_file_read = open('account.txt','r')
     print(account_file_read.read())
+    account_file_read.close()
 
 # Recover exisiting account
 def account_recovery():
-    account_file = open('account.txt','r')
-    #contents = account_file.read()
-    info = account_info_dict
-    print("What is your username?")
-    user_answer = input("")
-    for attempts in range(6):
-        if user_answer == info.get("Username"):
-            print(info.get("Security Question"))
-            security_answer = input("")
-            if security_answer == info.get("Security Answer"):
-                print(info.get("Password"))
-            else:
-                attempts += 1
+    account_dict_file = open('account.txt','r')
+
+    for line in account_dict_file:
+        word = re.split('\{|: |, |\}', line)
+        name = word[1]
+        username = name.replace("'","")
+        pass_w = word[6]
+        password = pass_w.replace("'","")
+        sec_ques = word[8]
+        security_question = sec_ques.replace('"',"")
+        sec_answ = word[10]
+        security_answer = sec_answ.replace("'","")
     
-    account_file.close()
+    attempts = 4
+
+    while True:
+        print("Enter a username: ")
+        user_answer = input("")
+
+        if user_answer == username:
+            while True:
+                print(security_question)
+                question_answer = input("")
+                if question_answer == security_answer:
+                    print("Your password is: "+password)
+                    break
+                elif attempts == 0:
+                    print("You have exceeded max attempts.")
+                    break
+                else:
+                    attempts -= 1
+                    print("You have "+ str(attempts) +" attempt(s) left.")        
+            break
+        else:
+            print("Username not found!")
+            continue
+
+    account_dict_file.close()
+
+    return
+
+#<-- Second Major Function -->
+def login():
+    account_dict_file = open('account.txt','r')
+
+    attempts = 4
+    for line in account_dict_file:
+        word = re.split('\{|: |, |\}', line)
+        name = word[1]
+        username = name.replace("'","")
+        pass_w = word[6]
+        password = pass_w.replace("'","")
+
+    while True:
+        print("Enter your username: ")
+        user_input_username = input("")
+
+        if user_input_username == username:
+            while True:
+                print("Enter your password: ")
+                user_input_password = input("")
+                if user_input_password == password:
+                    password_manager()
+                    break
+                elif attempts == 0:
+                    print("You have exceeded max password attempts!")
+                    break
+                else:
+                    attempts -= 1
+                    print("Password not found!")
+                    print("You have "+ str(attempts) +" attempt(s) left.")
+            break
+
+        else:
+            print("Username not found!")
+            continue
+
+    account_dict_file.close()
 
     return
     
@@ -157,16 +223,17 @@ def password_manager():
 
 
 def main():
-    print("Hey welcome to Password Manager!")
+    print("-"*29, "\nWelcome to Password Manager!"), print("-"*29)
+    print('*IMPORTANT* Type "recovery" if you want to recover your password!')
     answer = input("Do want to create an account? Type 'yes' or 'no': ")
-    accepted_answers = 'yes','no','read'
+    accepted_answers = 'yes','no','recovery'
 
     if answer == 'yes':
         account_create()
     elif answer == 'no':
+        login()
+    elif answer == 'recovery':
         account_recovery()
-    elif answer == 'read':
-        list_account()
     else:
         print("Incorrect use.")
         
