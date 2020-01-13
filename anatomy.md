@@ -5,20 +5,43 @@
 <strike>Create an account, Store it</strike>
 <strike>Make a password, Store it to the account</strike>
 <strike>Create a list of general questions</strike>
-Save question and answer
-Save Account.
-____________________________
+<strike>Save question and answer<strike>
+<strike>Save Account.<strike>
 
-1.input, dictionary, if else
+------------------
+# Account Recovery
+------------------
+Create a "Forgot Pass" function:
 
-2.input
+<strike>Ask user for username<strike>
 
-3.input, range, if else
+<strike>Return to user security question under the account<strike>
 
-4.array/list
+<strike>Ask for user to answer (expecting answer saved to the account)<strike>
 
-5.dictionary/list
+<strike>If answer is correct, return user password.<strike>
+
+(Optional) Ask if user wants to create/generate a new password
+
+<strike>If answer is incorrect give user 4 more tries(5 tries total), kill function.<strike>
 
 ---------------------------
-# Password Managing Attempt
+# Password Managing Skeleton
 ---------------------------
+<strike>1. Ask if user would like to create a password or have one generated</strike>
+
+1. Ask user to create a password of at least 6 characters || Ask user to use atleast 1 special character and 1 number (optional)
+2. Rate the password by the following:
+
+the password is bad if:
+- the same character, special character, or int is used more than half of the total number of characters created
+
+the password is okay if:
+- the same character, special character, or int is used less than or equal to half of the total number of characters created
+
+the password is safe if:
+- no characters, special characters, or ints are repeated
+
+3. Ask if user would like to save if "Okay" rating given
+- if user would not like to save kill program (for now)
+4. Save to dictionary/list

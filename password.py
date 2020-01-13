@@ -1,12 +1,31 @@
 import random
-import shane_char
+#importing personal mod for fun
+import shane_char 
+import re
 
-#dictionaries for storing accounts and passwords
-# Creates account, Password, and Security Question and stores them.
+# class account_stuff:
+#     def __init__(self):
+#         self.username = ''
+#         self.password = ''
+#         self.sec_question = ''
+#         self.sec_answer = ''
+
+# Account1(username) : {username : jim
+        #               password : rand_pass 
+        #               sec_quest: some_key
+        #               sec_answ : woofles}
+
+# Account2(username) : {username : karen
+        #               password : rand_pass 
+        #               sec_answ : some_key
+        #               sec_answ : idk}
+
+account_dict = {}
+account_info_dict = {}
+
+#<-- First major function -->
 def account_create():
-    #Have a username and password -> security answer
-    #account_dict = {}
-
+    #user_info = account_stuff
     print("-"*18, "\nAccount Creation!"), print("-"*18)
 
     while True:
@@ -15,19 +34,27 @@ def account_create():
             print("Username has to be 5 characters or more.")
             continue
         else:
+            account_info_dict["Username"] = username
             break
+
+
+    if password_randomizer_query() == 'no':
+        while True:
+            password = input("Enter a Password:\n")
+            if len(password) < 6:
+                print("Password has to be 6 characters or more.")
+                continue
+            else:
+                account_info_dict["Password"] = password
+                break
     
-    while password_randomizer_query() == 'no':
-        password = input("Enter a Password:\n")
-        if len(password) < 6:
-            print("Password has to be 6 characters or more.")
-            continue
-        else:
-            break
+    account_dict[username] = account_info_dict
 
     security_questions()
 
-    return
+    account_save()
+
+    return 
 
 # Asks user to pick a question and saves the answer
 def security_questions():
@@ -49,7 +76,10 @@ def security_questions():
      print(value)
      question_answer = input("")
 
-     return question_answer
+     account_info_dict["Security Question"] = value
+     account_info_dict["Security Answer"] = question_answer
+
+     return value, question_answer
 
 # Asks to generate a randomized password
 def password_randomizer_query():
@@ -58,7 +88,9 @@ def password_randomizer_query():
     while True:
         rand_answer = input("Do you want a randomized password? ('yes' or 'no'):\n")
         if rand_answer == 'yes':
-            print("Your random pass is: " + random_pass())
+            gen_pass = random_pass()
+            account_info_dict["Password"] = gen_pass
+            print("Your random pass is: " + gen_pass)
             break
         elif rand_answer == 'no':
             break
@@ -71,18 +103,118 @@ def password_randomizer_query():
 def random_pass():
     string = shane_char.ascii_characters_and_num()
     letters_and_num = string.letters + string.digits
-    password = random.choice(string.lowercase)
-    password += random.choice(string.uppercase)
-    password += random.choice(string.digits)
+    rand_password = random.choice(string.lowercase)
+    rand_password += random.choice(string.uppercase)
+    rand_password += random.choice(string.digits)
 
     for characters in range(6):
-        password += random.choice(letters_and_num)
+        rand_password += random.choice(letters_and_num)
 
-    password_list = list(password)
+    password_list = list(rand_password)
     random.SystemRandom().shuffle(password_list)
-    password = ''.join(password_list)
+    rand_password = ''.join(password_list)
 
-    return password
+    return rand_password
+
+# Saves and stores account
+def account_save():
+
+    account_file = open('account.txt','w')
+    account_file.write(str(account_dict))
+    account_file.close()
+
+    return account_dict
+
+#lists account dict
+def list_account():
+    account_file_read = open('account.txt','r')
+    print(account_file_read.read())
+    account_file_read.close()
+
+# Recover exisiting account
+def account_recovery():
+    account_dict_file = open('account.txt','r')
+
+    for line in account_dict_file:
+        word = re.split('\{|: |, |\}', line)
+        name = word[1]
+        username = name.replace("'","")
+        pass_w = word[6]
+        password = pass_w.replace("'","")
+        sec_ques = word[8]
+        security_question = sec_ques.replace('"',"")
+        sec_answ = word[10]
+        security_answer = sec_answ.replace("'","")
+    
+    attempts = 4
+
+    while True:
+        print("Enter a username: ")
+        user_answer = input("")
+
+        if user_answer == username:
+            while True:
+                print(security_question)
+                question_answer = input("")
+                if question_answer == security_answer:
+                    print("Your password is: "+password)
+                    break
+                elif attempts == 0:
+                    print("You have exceeded max attempts.")
+                    break
+                else:
+                    attempts -= 1
+                    print("You have "+ str(attempts) +" attempt(s) left.")        
+            break
+        else:
+            print("Username not found!")
+            continue
+
+    account_dict_file.close()
+
+    return
+
+#<-- Second Major Function -->
+def login():
+    account_dict_file = open('account.txt','r')
+
+    attempts = 4
+    for line in account_dict_file:
+        word = re.split('\{|: |, |\}', line)
+        name = word[1]
+        username = name.replace("'","")
+        pass_w = word[6]
+        password = pass_w.replace("'","")
+
+    while True:
+        print("Enter your username: ")
+        user_input_username = input("")
+
+        if user_input_username == username:
+            while True:
+                print("Enter your password: ")
+                user_input_password = input("")
+                if user_input_password == password:
+                    password_manager()
+                    break
+                elif attempts == 0:
+                    print("You have exceeded max password attempts!")
+                    break
+                else:
+                    attempts -= 1
+                    print("Password not found!")
+                    print("You have "+ str(attempts) +" attempt(s) left.")
+            break
+
+        else:
+            print("Username not found!")
+            continue
+
+    account_dict_file.close()
+
+    return
+    
+
 
 
 # Manages and Rates your passwords.
@@ -91,14 +223,17 @@ def password_manager():
 
 
 def main():
-    print("Hey welcome to Password Manager!")
+    print("-"*29, "\nWelcome to Password Manager!"), print("-"*29)
+    print('*IMPORTANT* Type "recovery" if you want to recover your password!')
     answer = input("Do want to create an account? Type 'yes' or 'no': ")
-    accepted_answers = ['yes','no']
+    accepted_answers = 'yes','no','recovery'
 
     if answer == 'yes':
         account_create()
     elif answer == 'no':
-        password_manager()
+        login()
+    elif answer == 'recovery':
+        account_recovery()
     else:
         print("Incorrect use.")
         
