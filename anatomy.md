@@ -5,8 +5,8 @@
 <strike>Create an account, Store it</strike>
 <strike>Make a password, Store it to the account</strike>
 <strike>Create a list of general questions</strike>
-<strike>Save question and answer<strike>
-<strike>Save Account.<strike>
+<strike>Save question and answer</strike>
+<strike>Save Account.</strike>
 
 ------------------
 # Account Recovery
