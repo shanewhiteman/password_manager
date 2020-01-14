@@ -36,7 +36,6 @@ def account_create():
             account_info_dict["Username"] = username
             break
 
-
     if password_randomizer_query() == 'no':
         while True:
             password = input("Enter a Password:\n")
@@ -216,8 +215,6 @@ def login():
 
 # Manages and Rates your passwords.
 def password_manager():
-    string = shane_char.ascii_characters_and_num()
-    accepted_answers = 'yes','no'
 
     if password_randomizer_query() == 'no':
         while True:
@@ -227,6 +224,9 @@ def password_manager():
                 continue
             elif any(character.isdigit() for character in password) == False:
                 print("Password has to include at least one digit/number.")
+                continue
+            elif bool(re.match("^[a-zA-Z0-9_]*$", password)) == True :
+                print("Password has to include at least one special character")
                 continue
             else:
                 account_info_dict["Password"] = password
@@ -246,10 +246,10 @@ def password_rating():
     return
 
 def main():
+
     print("-"*29, "\nWelcome to Password Manager!"), print("-"*29)
     print('*IMPORTANT* Type "recovery" if you want to recover your password!')
     answer = input("Do want to create an account? Type 'yes' or 'no': ")
-    accepted_answers = 'yes','no','recovery','manage'
 
     if answer == 'yes':
         account_create()
@@ -263,5 +263,3 @@ def main():
         print("Incorrect use.")
         
 main()
-
-#encryption and encoding

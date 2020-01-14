@@ -31,7 +31,6 @@ If answer is correct, return user password.</strike>
 1. <strike>Ask if user would like to create a password or have one generated</strike>
 
 2. <strike>Ask user to create a password of at least 6 characters || Ask user to use atleast 1 special character and 1 number (optional)</strike>
-*special character part not done*
 
 3. Rate the password by the following:
 
