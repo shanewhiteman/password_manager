@@ -216,7 +216,7 @@ def login():
 
 # Manages and Rates your passwords.
 def password_manager():
-    #string = shane_char.ascii_characters_and_num()
+    string = shane_char.ascii_characters_and_num()
     accepted_answers = 'yes','no'
 
     if password_randomizer_query() == 'no':
@@ -241,6 +241,9 @@ def password_save():
 
     return account_info_dict
 
+def password_rating():
+
+    return
 
 def main():
     print("-"*29, "\nWelcome to Password Manager!"), print("-"*29)
