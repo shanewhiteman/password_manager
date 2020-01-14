@@ -1,4 +1,3 @@
-
 Create a password manager that manages your passwords
 and gives you feedback on the password you just gave.
 
@@ -46,12 +45,13 @@ and gives you feedback on the password you just gave.
 the password is bad if:
 - the same character, special character, or int is used more than half of the total number of characters created
 
-the password is okay if:
-- the same character, special character, or int is used less than or equal to half of the total number of characters created
-
 the password is safe if:
 - no characters, special characters, or ints are repeated
 
-3. Ask if user would like to save if "Okay" rating given
-- if user would not like to save kill program (for now)
-4. Save to dictionary/list
+the password is okay if:
+- It's not bad but it's not entirely safe either.
+
+3. Ask if user would like to save
+- if user would not like to save ask if user wants to make a new one or exit function.
+
+4. Saves password.
