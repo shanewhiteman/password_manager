@@ -9,16 +9,6 @@ import re
 #         self.sec_question = ''
 #         self.sec_answer = ''
 
-# Account1(username) : {username : jim
-        #               password : rand_pass 
-        #               sec_quest: some_key
-        #               sec_answ : woofles}
-
-# Account2(username) : {username : karen
-        #               password : rand_pass 
-        #               sec_answ : some_key
-        #               sec_answ : idk}
-
 account_dict = {}
 account_info_dict = {}
 
@@ -57,10 +47,10 @@ def account_create():
 # Asks user to pick a question and saves the answer
 def security_questions():
      sec_questions_dict = {
-         "1":"What's your dog's name",
-         "2":"What's your cat's name",
-         "3":"What's your best friend's middle name",
-         "4":"some fourth option"
+         "1":"What's your pet's name",
+         "2":"What's your mother's middle name",
+         "3":"What's your best friend's nickname",
+         "4":"Which hospital were you born in"
       }
 
      print("-"*26)
@@ -104,6 +94,7 @@ def random_pass():
     rand_password = random.choice(string.lowercase)
     rand_password += random.choice(string.uppercase)
     rand_password += random.choice(string.digits)
+    rand_password += random.choice(string.special_characters)
 
     for characters in range(6):
         rand_password += random.choice(letters_and_num)
@@ -209,28 +200,55 @@ def login():
             continue
 
     account_dict_file.close()
-
+    
     return
     
-
+#<---- THIRD MAJOR FUNCTION ---->
 # Manages and Rates your passwords.
 def password_manager():
 
     if password_randomizer_query() == 'no':
         while True:
             password = input("Enter a Password:\n")
+            # Fail Case 1
             if len(password) < 6:
                 print("Password has to be 6 characters or more.")
                 continue
+            # Fail Case 2
             elif any(character.isdigit() for character in password) == False:
                 print("Password has to include at least one digit/number.")
                 continue
-            elif bool(re.match("^[a-zA-Z0-9_]*$", password)) == True :
+            # Fail Case 3
+            elif bool(re.match("^[a-zA-Z0-9_]*$", password)) == True:
                 print("Password has to include at least one special character")
                 continue
             else:
                 account_info_dict["Password"] = password
+                password_rating(password)
+                print("Would you like to save your password? (Type 'yes' or 'no'): ")
+                save_query = input("")
+                if save_query == 'yes':
+                    password_save()
+                    print("Password Saved.")
+                    break
+                elif 'no':
+                    continue
+                else:
+                    break
+    else:
+        while True:
+            print("Would you like to save your password?(Type 'yes' or 'no'): ")
+            save_query = input("")
+            if save_query == 'yes':
+                password_save()
+                print("Password Saved.")
                 break
+            elif 'no':
+                password_randomizer_query()
+                continue
+            else:
+                break
+
 
 # Saves your passwords
 def password_save():
@@ -241,9 +259,30 @@ def password_save():
 
     return account_info_dict
 
-def password_rating():
 
-    return
+def password_rating(string):
+    import collections
+    repeat_dict = collections.defaultdict(int)
+
+    for characters in string:
+        repeat_dict[characters] += 1
+
+    for characters in sorted(repeat_dict, key=repeat_dict.get, reverse=True):
+        if repeat_dict[characters] > len(string)//2:
+            print("*WARNING* This password is Bad!")
+            break
+        elif repeat_dict[characters] == 1:
+            print("This password is Safe!")
+            break
+        else:
+            print("This password is Okay.")
+            break
+
+# lists the password
+def list_password():
+    account_file = open('password.txt','r')
+    print(str(account_file.read()))
+    account_file.close()
 
 def main():
 
@@ -257,8 +296,8 @@ def main():
         login()
     elif answer == 'recovery':
         account_recovery()
-    elif answer == 'manage':
-        password_manager()
+    elif answer == 'read':
+        list_password()
     else:
         print("Incorrect use.")
         

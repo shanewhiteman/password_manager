@@ -34,16 +34,16 @@ If answer is correct, return user password.</strike>
 
 3. Rate the password by the following:
 
-the password is bad if:
+<strike>the password is bad if:
 - the same character, special character(optional), or int is used more than half of the total number of characters created
-
-the password is okay if:
-- the same character, special character(optional), or int is used less than or equal to half of the total number of characters created
 
 the password is safe if:
 - no characters, special characters(optional), or ints are repeated
 
-4. Ask if user would like to save if "Okay" rating given
+the password is okay if:
+- It's not bad but it's not entirely safe either.
+
+4. Ask if user would like to save
 - if user would not like to save ask if user wants to make a new one or exit function.
 
-5. Save to dictionary/list
+5. Save to dictionary/list</strike>
