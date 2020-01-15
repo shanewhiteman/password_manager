@@ -2,19 +2,13 @@ import random
 import shane_char 
 import re
 
-# class account_stuff:
-#     def __init__(self):
-#         self.username = ''
-#         self.password = ''
-#         self.sec_question = ''
-#         self.sec_answer = ''
 
 account_dict = {}
 account_info_dict = {}
 
 #<---- FIRST MAJOR FUNCTION ---->
 def account_create():
-    #user_info = account_stuff
+
     print("-"*18, "\nAccount Creation!"), print("-"*18)
 
     while True:
@@ -57,7 +51,7 @@ def security_questions():
      for key,val in sec_questions_dict.items():
          print(key,":",val)
      print("-"*26)
-     #take in a key -> print out the value -> ask for input
+
      security_choice = input("Please choose a security question (Type in corresponding number):\n")
 
      value = sec_questions_dict[security_choice]
@@ -164,6 +158,7 @@ def account_recovery():
     return
 
 #<---- SECOND MAJOR FUNCTION ---->
+# Login to existing account
 def login():
     account_dict_file = open('account.txt','r')
 
@@ -259,7 +254,7 @@ def password_save():
 
     return account_info_dict
 
-
+# Gives the password a rating
 def password_rating(string):
     import collections
     repeat_dict = collections.defaultdict(int)
@@ -278,12 +273,13 @@ def password_rating(string):
             print("This password is Okay.")
             break
 
-# lists the password
+# Lists the password
 def list_password():
     account_file = open('password.txt','r')
     print(str(account_file.read()))
     account_file.close()
 
+# Main Function
 def main():
 
     print("-"*29, "\nWelcome to Password Manager!"), print("-"*29)
