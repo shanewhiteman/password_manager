@@ -49,7 +49,7 @@ the password is safe if:
 - no characters, special characters, or ints are repeated
 
 the password is okay if:
-- It's not bad but it's not entirely safe either.
+- It's passes the bad parameter but doesn't pass the safe parameter
 
 3. Ask if user would like to save
 - if user would not like to save ask if user wants to make a new one or exit function.
