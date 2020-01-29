@@ -1,5 +1,6 @@
-Create a password manager that manages your passwords
-and gives you feedback on the password you just gave.
+Objective:
+A password manager that manages your passwords
+and gives you a rating based on the password you gave it
 
 ------------------
 # Account Creation
