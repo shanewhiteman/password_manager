@@ -1,46 +1,44 @@
 # Password Creator/Manager
 
 import random
-import shane_char 
+import shane_char
 import re
 import json
 
-class dictionary_class:
+class account:
     def __init__(self):
-        self.account_dict = {}
-        self.account_info_dict = {}
-
+        self.acc_info = {}
+        self.acc = {}
 
 # Creates an account
 def account_create():
-    dict_data = dictionary_class()
+    acc_data = account()
 
-    print("-"*18, "\nAccount Creation!"), print("-"*18)
+    print("-"*17, "\nAccount Creation!"), print("-"*17)
 
     while True:
         username = input("Enter a Username:\n")
         if len(username) < 5:
             print("Username has to be 5 characters or more.")
             continue
-        else:
-            dict_data.account_info_dict["Username"] = username
-            break
 
-    create_password()
+        acc_data.acc_info["Username"] = username
+        break
+
+    create_password(acc_data.acc_info)
     
-    dict_data.account_dict[username] = dict_data.account_info_dict
+    acc_data.acc[username] = acc_data.acc_info
 
-    get_security_questions()
+    get_security_questions(acc_data.acc_info)
 
-    account_save()
+    account_save(acc_data.acc_info)
 
     return
 
 # Creates password
-def create_password():
-    dict_data = dictionary_class()
+def create_password(acc_info):
 
-    if generate_random_password() == 'no':
+    if generate_random_password(acc_info) == 'no':
         while True:
             password = input("Enter a Password:\n")
             # Fail Case 1
@@ -55,39 +53,23 @@ def create_password():
             elif bool(re.match("^[a-zA-Z0-9_]*$", password)) == True:
                 print("Password has to include at least one special character")
                 continue
-            else:
-                dict_data.account_info_dict["Password"] = password
-                password_rating(password)
-                print("Would you like to save your password? (Type 'yes' or 'no'): ")
-                save_query = input("")
-                if save_query == 'yes':
-                    password_save()
-                    print("Password Saved.")
-                    break
-                elif 'no':
-                    continue
-                else:
-                    break
-    else:
-        while True:
-            print("Would you like to save your password?(Type 'yes' or 'no'): ")
+       
+            acc_info["Password"] = password
+            password_info = password
+            password_rating(password)
+            print("Would you like to save your password? (Type 'yes' or 'no'): ")
             save_query = input("")
             if save_query == 'yes':
-                password_save()
+                password_save(password_info)
                 print("Password Saved.")
-                break
             elif 'no':
-                create_password()
                 continue
-            else:
-                break
-   
-    return
-
+            
+            break
+        return
 
 # Asks user to pick a question and saves the answer
-def get_security_questions():
-    dict_data = dictionary_class()
+def get_security_questions(acc_info):
     
     sec_questions_dict = {
         "1":"What's your pet's name",
@@ -102,15 +84,15 @@ def get_security_questions():
     print("-"*26)
 
     while True:
-        dict_data = dictionary_class()
+
         security_choice = input("Please choose a security question (Type in corresponding number):\n")
 
         if security_choice in sec_questions_dict:
             value = sec_questions_dict[security_choice]
             print(value)
             question_answer = input("")
-            dict_data.account_info_dict["Security Question"] = value
-            dict_data.account_info_dict["Security Answer"] = question_answer
+            acc_info["Security Question"] = value
+            acc_info["Security Answer"] = question_answer
             break
 
         else:
@@ -118,18 +100,20 @@ def get_security_questions():
             print("*Choose a security question by typing in the number before the question* \n(ex: 1, 2, 3)")
             continue
 
-    return value, question_answer
+    return
 
 # Asks to generate a randomized password
-def generate_random_password():
-    dict_data = dictionary_class()
+def generate_random_password(acc_info):
 
     while True:
         rand_answer = input("Do you want a randomized password? ('yes' or 'no'):\n")
         if rand_answer == 'yes':
             gen_pass = random_pass()
-            dict_data.account_info_dict["Password"] = gen_pass
+            acc_info["Password"] = gen_pass
+            password_info = acc_info["Password"]
             print("Your random pass is: " + gen_pass)
+            password_save(password_info)
+
             break
         elif rand_answer == 'no':
             break
@@ -153,49 +137,31 @@ def random_pass():
     return rand_password
 
 # Saves and stores account
-def account_save():
-    dict_data = dictionary_class()
-
-    # account_file = open('account.txt','a')
-    # account_file.write(dict_data.account_dict)
-    # account_file.write("\n")
-    # account_file.close()
-    json_file = open('account_file.json', 'a')
-    json.dump(dict_data.account_dict, json_file)
+def account_save(acc_data):
+    
+    json_file = open('account_file_test.json', 'w')
+    json.dump(acc_data, json_file)
 
     return
 
 # Recover exisiting account
 def account_recovery():
-    account_dict_file = open('account_file.json')
-    file_data = json.load(account_dict_file)
+    acc_data = open('account_file_test.json', 'r')
+    file_data = json.load(acc_data)
 
-    #for acc in file_data:
-        # name =
-        # password =
-        # security_question =
-        # secuirty_answer = 
+    username = file_data["Username"]
+    password = file_data["Password"]
+    security_question = file_data["Security Question"]
+    security_answer = file_data["Security Answer"]
 
-
-    # for line in account_dict_file:
-        
-    #     word = re.split('\{|: |, |\}', line)
-    #     name = word[1]
-    #     username = name.replace("'","")
-    #     pass_w = word[6]
-    #     password = pass_w.replace("'","")
-    #     sec_ques = word[8]
-    #     security_question = sec_ques.replace('"',"")
-    #     sec_answ = word[10]
-    #     security_answer = sec_answ.replace("'","")
-    
     attempts = 4
 
     while True:
+        print("-"*18, "\nPassword Recovery!"), print("-"*18)
         print("Enter a username: ")
         user_answer = input("")
 
-        if user_answer == username:
+        if user_answer == username in file_data["Username"]:
             while True:
                 print(security_question)
                 question_answer = input("")
@@ -213,21 +179,17 @@ def account_recovery():
             print("Username not found!")
             continue
 
-    account_dict_file.close()
-
     return
 
 # Login to existing account
 def login():
-    account_dict_file = open('account.txt','r')
+    account_dict_file = open('account_file_test.json','r')
+    file_data = json.load(account_dict_file)
+        
+    username = file_data['Username']
+    password = file_data['Password']
 
     attempts = 4
-    for line in account_dict_file:
-        word = re.split('\{|: |, |\}', line)
-        name = word[1]
-        username = name.replace("'","")
-        pass_w = word[6]
-        password = pass_w.replace("'","")
 
     while True:
         print("Enter your username: ")
@@ -239,6 +201,7 @@ def login():
                 user_input_password = input("")
                 if user_input_password == password:
                     #password_manager()
+                    print("We made it!")
                     break
                 elif attempts == 0:
                     print("You have exceeded max password attempts!")
@@ -252,8 +215,6 @@ def login():
         else:
             print("Username not found!")
             continue
-
-    account_dict_file.close()
     
     return
     
@@ -264,18 +225,13 @@ def login():
 
 
 # Saves and stores your passwords
-def password_save():
-    dict_data = dictionary_class()
+def password_save(password_info):
+    
+    json_file = open('password_file_test.json', 'w')
+    json.dump(password_info, json_file)
 
-    # account_file = open('password.txt','a')
-    # account_file.write(dict_data.account_info_dict)
-    # account_file.write("\n")
-    # account_file.close()
-    json_file = open('password_file.json', 'a')
-    json.dump(dict_data.account_dict, json_file)
+    return
 
-
-    return dict_data.account_info_dict
 
 # Gives the password a rating
 def password_rating(string):
@@ -296,35 +252,20 @@ def password_rating(string):
             print("This password is Okay.")
             break
 
-# Lists the password
-def list_password():
-    account_file = open('password.txt','r')
-    print(str(account_file.read()))
-    account_file.close()
-
 # Main Function
 def main():
 
     print("-"*29, "\nWelcome to Password Manager!"), print("-"*29)
-    print('*IMPORTANT* Type "recovery" to recover your account password if forgotten!')
-    answer = input("Do want to create an account? Type 'yes' or 'no': ")
+    print("Forgot your password? Type 'r' to get back your information!")
+    answer = input("Do want to create an account? Type 'y', or type 'n' if you want to login: ")
 
-    if answer == 'yes':
+    if answer == 'y':
         account_create()
-    elif answer == 'no':
+    elif answer == 'n':
         login()
-    elif answer == 'recovery':
+    elif answer == 'r':
         account_recovery()
     else:
         print("Incorrect use.")
         
 main()
-
-
-#process to save data
-#dictionary{"firstname": "clint", "lastname": "edwards"}(binary/object) -> function -> (string) {"firstname" = "clint", "lastname": = "edwards"} -> file -> {"firstname" = "clint", "lastname": = "edwards"}
-
-#process to load data
-#file -> {"firstname" = "clint", "lastname": = "edwards"} -> readfile -> function(decode) -> dictionary{"firstname": "clint", "lastname": "edwards"}(binary/object)
-
-#each function for each check
