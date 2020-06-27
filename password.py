@@ -38,7 +38,7 @@ def account_create():
 # Creates password
 def create_password(acc_info):
 
-    if generate_random_password(acc_info) == 'no':
+    if generate_random_password(acc_info) == 'n':
         while True:
             password = input("Enter a Password:\n")
             # Fail Case 1
@@ -57,12 +57,12 @@ def create_password(acc_info):
             acc_info["Password"] = password
             password_info = password
             password_rating(password)
-            print("Would you like to save your password? (Type 'yes' or 'no'): ")
+            print("Would you like to save your password? (Type 'y' or 'n'): ")
             save_answer = input("")
-            if save_answer == 'yes':
+            if save_answer == 'y':
                 #password_save(password_info)
                 print("Password Saved.")
-            elif 'no':
+            elif 'n':
                 continue
             
             break
@@ -106,8 +106,8 @@ def get_security_questions(acc_info):
 def generate_random_password(acc_info):
 
     while True:
-        rand_answer = input("Do you want a randomized password? ('yes' or 'no'):\n")
-        if rand_answer == 'yes':
+        rand_answer = input("Do you want a randomized password? ('y' or 'n'):\n")
+        if rand_answer == 'y':
             gen_pass = random_pass()
             acc_info["Password"] = gen_pass
             password_info = acc_info["Password"]
@@ -115,7 +115,7 @@ def generate_random_password(acc_info):
             #password_save(password_info)
 
             break
-        elif rand_answer == 'no':
+        elif rand_answer == 'n':
             break
         else:
             print("Incorrect use.")
