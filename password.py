@@ -58,9 +58,9 @@ def create_password(acc_info):
             password_info = password
             password_rating(password)
             print("Would you like to save your password? (Type 'yes' or 'no'): ")
-            save_query = input("")
-            if save_query == 'yes':
-                password_save(password_info)
+            save_answer = input("")
+            if save_answer == 'yes':
+                #password_save(password_info)
                 print("Password Saved.")
             elif 'no':
                 continue
@@ -112,7 +112,7 @@ def generate_random_password(acc_info):
             acc_info["Password"] = gen_pass
             password_info = acc_info["Password"]
             print("Your random pass is: " + gen_pass)
-            password_save(password_info)
+            #password_save(password_info)
 
             break
         elif rand_answer == 'no':
@@ -139,14 +139,14 @@ def random_pass():
 # Saves and stores account
 def account_save(acc_data):
     
-    json_file = open('account_file_test.json', 'w')
+    json_file = open('account_file.json', 'w')
     json.dump(acc_data, json_file)
 
     return
 
 # Recover exisiting account
 def account_recovery():
-    acc_data = open('account_file_test.json', 'r')
+    acc_data = open('account_file.json', 'r')
     file_data = json.load(acc_data)
 
     username = file_data["Username"]
@@ -183,7 +183,7 @@ def account_recovery():
 
 # Login to existing account
 def login():
-    account_dict_file = open('account_file_test.json','r')
+    account_dict_file = open('account_file.json','r')
     file_data = json.load(account_dict_file)
         
     username = file_data['Username']
@@ -225,27 +225,28 @@ def login():
 
 
 # Saves and stores your passwords
-def password_save(password_info):
+#def password_save(password_info):
     
-    json_file = open('password_file_test.json', 'w')
-    json.dump(password_info, json_file)
+    
+    #json_file = open('password_file.json', 'w')
+    #json.dump(password_info, json_file)
 
-    return
+    #return
 
 
 # Gives the password a rating
 def password_rating(string):
     import collections
-    repeat_dict = collections.defaultdict(int)
+    repeat = collections.defaultdict(int)
 
     for characters in string:
-        repeat_dict[characters] += 1
+        repeat[characters] += 1
 
-    for characters in sorted(repeat_dict, key=repeat_dict.get, reverse=True):
-        if repeat_dict[characters] > len(string)//2:
+    for characters in sorted(repeat, key=repeat.get, reverse=True):
+        if repeat[characters] > len(string)//2:
             print("*WARNING* This password is Bad!")
             break
-        elif repeat_dict[characters] == 1:
+        elif repeat[characters] == 1:
             print("This password is Safe!")
             break
         else:
