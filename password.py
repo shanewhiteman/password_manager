@@ -1,14 +1,20 @@
 # Password Creator/Manager
+# Notes: Three Dictionaries!
+# - Make sure to use json.loads b4 every edit so it adds it to the dictionary 
+# example:
+# (acc1 : {accinfo {site : pass}},
+#  acc2 : {accinfo {site : pass}})
 
 import random
-import shane_char
 import re
 import json
+import pathlib
+import shane_char
 
 class account:
     def __init__(self):
-        self.acc_info = {}
         self.acc = {}
+        self.acc_info = {}
 
 # Creates an account
 def account_create():
@@ -26,12 +32,12 @@ def account_create():
         break
 
     create_password(acc_data.acc_info)
-    
-    acc_data.acc[username] = acc_data.acc_info
 
     get_security_questions(acc_data.acc_info)
 
-    account_save(acc_data.acc_info)
+    acc_data.acc[username] = acc_data.acc_info
+
+    account_save(acc_data.acc)
 
     return
 
@@ -55,7 +61,7 @@ def create_password(acc_info):
                 continue
        
             acc_info["Password"] = password
-            password_info = password
+            #password_info = password
             password_rating(password)
             print("Would you like to save your password? (Type 'y' or 'n'): ")
             save_answer = input("")
@@ -138,9 +144,14 @@ def random_pass():
 
 # Saves and stores account
 def account_save(acc_data):
-    
-    json_file = open('account_file.json', 'w')
-    json.dump(acc_data, json_file)
+    acc_file = open('account_file.json', 'w')
+    # add_data = open('account_file.json','r')
+
+    # if bool(pathlib.Path("account_file.json")) == True:
+    #     json.load(add_data)
+    #     json.dump(acc_data, acc_file)
+
+    json.dump(acc_data, acc_file)
 
     return
 
@@ -149,19 +160,30 @@ def account_recovery():
     acc_data = open('account_file.json', 'r')
     file_data = json.load(acc_data)
 
-    username = file_data["Username"]
-    password = file_data["Password"]
-    security_question = file_data["Security Question"]
-    security_answer = file_data["Security Answer"]
-
     attempts = 4
 
     while True:
         print("-"*18, "\nPassword Recovery!"), print("-"*18)
-        print("Enter a username: ")
-        user_answer = input("")
 
-        if user_answer == username in file_data["Username"]:
+        while True:
+            print("Enter a username: ")
+            user_answer = input("")
+            try: 
+                file_data[user_answer]["Username"]
+            except KeyError:
+                print("That account doesnt exist!")
+                continue
+            else:
+                break
+        
+        username = file_data[user_answer]["Username"]
+        password = file_data[user_answer]["Password"]
+        security_question = file_data[user_answer]["Security Question"]
+        security_answer = file_data[user_answer]["Security Answer"]
+
+
+        if user_answer == username in file_data[user_answer]["Username"]:
+
             while True:
                 print(security_question)
                 question_answer = input("")
