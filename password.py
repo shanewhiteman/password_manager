@@ -53,7 +53,6 @@ class account:
                     print("Password has to include at least one special character")
                     continue
 
-                # self.user_info["Password"] = password
                 self.pass_rating(password)
                 print("Are you sure you want \"" + password + "\" as your password? (Type 'y' or 'n'): ")
                 save_answer = input("")
@@ -108,12 +107,7 @@ class account:
         while True:
             rand_answer = input("Would you like a randomized password? ('y' or 'n'):\n")
             if rand_answer == 'y':
-                #self.get_random_pass()
                 break
-                # gen_pass = self.rand_pass()
-                # self.user_info["Password"] = gen_pass
-                # print("Your random pass is: " + gen_pass)
-                # break
             elif rand_answer == 'n':
                 break
             else:
@@ -160,84 +154,70 @@ class account:
         acc_file.close()
         return
 
+    # Checks if an account exists
+    def acc_check(self, user):
+        while True:
+            try:
+                self.user_acc[user]
+            except KeyError:
+                print("That account doesnt exist!")
+                return False
+            else:
+                return True
+
     # Gets the account from the user for deletion
     def get_user_acc(self):
-        acc_data = open(self.filename, 'r')
-        file_data = json.load(acc_data)
-        
+
         while True:
             print("Name the account you would like to delete (Type 'e' to exit): ")
             user_answer = input("")
             if user_answer == 'e':
                 sys.exit(1)
-            try:
-                file_data[user_answer]
-            except KeyError:
-                print("That account doesnt exist!")
+            elif self.acc_check(user_answer) == False:
                 continue
             else:
                 self.acc_del(user_answer)
                 break
 
-        acc_data.close()
         return
 
     # Deletes accounts and websites
     def acc_del(self, user):
         del self.user_acc[user]
         self.acc_save()
-        print("removed account \"" + user + "\"")
+        print("removed account: \"" + user + "\"")
 
     # Recover exisiting account
     def acc_recovery(self):
-        acc_data = open(self.filename, 'r')
-        file_data = json.load(acc_data)
-
+        #acc_data = open(self.filename, 'r')
+        #file_data = json.load(acc_data)
         attempts = 4
-
+        print("-"*18, "\nPassword Recovery!"), print("-"*18)
         while True:
-            print("-"*18, "\nPassword Recovery!"), print("-"*18)
+            user_answer = input("Enter a username: ")
 
-            while True:
-                print("Enter a username: ")
-                user_answer = input("")
-                try:
-                    file_data[user_answer]["Username"]
-                except KeyError:
-                    print("That account doesnt exist!")
-                    continue
-                else:
-                    break
-        
-            username = file_data[user_answer]["Username"]
-            password = file_data[user_answer]["Password"]
-            security_question = file_data[user_answer]["Security Question"]
-            security_answer = file_data[user_answer]["Security Answer"]
+            if self.acc_check(user_answer) == False:
+                continue
 
+            else:
+                password = self.user_acc[user_answer]["Password"]
+                security_question = self.user_acc[user_answer]["Security Question"]
+                security_answer = self.user_acc[user_answer]["Security Answer"]
 
-            if user_answer == username in file_data[user_answer]["Username"]:
-
+                print(security_question)
                 while True:
-                    print(security_question)
                     question_answer = input("")
                     if question_answer == security_answer:
                         print("Your password is: "+password)
                         break
                     elif attempts == 0:
                         print("You have exceeded max attempts.")
-                        break
+                        sys.exit(1)
                     else:
                         attempts -= 1
-                        print("You have "+ str(attempts) +" attempt(s) left.")        
-                break
-
-            else:
-                print("Username not found!")
-                continue
-
-            acc_data.close()
-
-            return
+                        print("You have "+ str(attempts) +" attempt(s) left.")
+                        continue
+        return
 
     # Gives the password a rating
     def pass_rating(self, string):
@@ -260,85 +240,75 @@ class account:
 
     # Login to existing account
     def login(self):
-        acc_data = open(self.filename, 'r')
-        file_data = json.load(acc_data)
 
         attempts = 4
 
         while True:
             print("Enter a username: ")
             user_answer = input("")
-            try:
-                file_data[user_answer]["Username"]
-            except KeyError:
-                print("That account doesnt exist!")
+            if self.acc_check(user_answer) == False:
                 continue
+            
             else:
-                break
-    
-        username = file_data[user_answer]["Username"]
-        password = file_data[user_answer]["Password"]
+                username = self.user_acc[user_answer]["Username"]
+                password = self.user_acc[user_answer]["Password"]
+                while True:
+                    print("Enter your password: ")
+                    get_password = input("")
+                    if get_password == password:
+                        break
+                    elif attempts == 0:
+                        print("You have exceeded max password attempts!")
+                        sys.exit(1)
+                    else:
+                        attempts -= 1
+                        print("Password not found!")
+                        print("You have "+ str(attempts) +" attempt(s) left.")
+                        continue
 
-        if user_answer == username in file_data[user_answer]["Username"]:
-            while True:
-                print("Enter your password: ")
-                get_password = input("")
-                if get_password == password:
-                    break
-                elif attempts == 0:
-                    print("You have exceeded max password attempts!")
-                    break
-                else:
-                    attempts -= 1
-                    print("Password not found!")
-                    print("You have "+ str(attempts) +" attempt(s) left.")
-                    continue
-
-            acc_data.close()
-
-            return username
+                return username
     
     # Password Manager
     def pass_manager(self):
-        acc = account('account_file.json')
-
         user = self.login()
+        web_acc = self.user_acc[user]["Web Accounts"]
+
         print("-"*65, "\nUsage: Enter a website then enter a password for the site.")
         print("Type 's' to see your passwords, type 'd' to delete an existing entry"), print("-"*65)
         site = input("Enter your website: ")
 
         if site == 'd':
-            print(self.user_acc[user]["Web Accounts"])
+            print(web_acc)
             while True:
                 print("Type 'e' to exit")
-                get_pass = input("Enter a website pass you would like to delete (type in website name): ")
+                get_pass = input("Enter an entry you would like to delete (type in website name): ")
 
                 if get_pass == 'e':
                     sys.exit(1)
-                try:
-                    self.user_pass[get_pass]
-                except KeyError:
-                    print("That account doesnt exist!")
+                
+                elif self.acc_check(get_pass["Web Accounts"]) == False:
                     continue
+
                 else:
+                    self.acc_del(get_pass)
                     break
-                self.acc_del(get_pass)
+
         elif site == 's':
-            print(self.user_acc[user]["Web Accounts"])
+            print(web_acc)
         else:
-            acc.acc_load()
             site_pass = self.create_pass()
             self.user_pass[site] = site_pass
-            self.user_acc[user]["Web Accounts"] = self.user_pass
+            web_acc = self.user_pass
             self.acc_save()
+
 # Main Function
 def main():
     acc = account('account_file.json')
     acc.acc_load()
 
     print("-"*29, "\nWelcome to Password Manager!"), print("-"*29)
-    print("Type 'd' to delete an account")
     print("Forgot your password? Type 'r' to get back your information!")
+    print("Type 'd' to delete an account")
     answer = input("Do want to create an account? Type 'y', or type 'n' if you want to login: ")
 
     if answer == 'y':
