@@ -4,6 +4,7 @@ import random
 import re
 import json
 import sys
+import os
 import get_char
 
 class account:
@@ -181,7 +182,7 @@ class account:
 
         return
 
-    # Deletes accounts and websites
+    # Deletes accounts
     def acc_del(self, user):
         del self.user_acc[user]
         self.acc_save()
@@ -268,41 +269,77 @@ class account:
 
                 return username
     
+    # Checks if entry exists
+    def entry_check(self, user, webinfo, webacc):
+        while True:
+            try:
+                self.user_acc[user][webinfo][webacc]
+            except KeyError:
+                print("That account doesnt exist!")
+                return False
+            else:
+                return True
+
+    # Deletes entries
+    def entry_del(self, user, webinfo, webacc):
+        del self.user_acc[user][webinfo][webacc]
+        self.acc_save()
+        print("removed entry: \"" + webacc + "\"")
+
     # Password Manager
     def pass_manager(self):
         user = self.login()
-        web_acc = self.user_acc[user]["Web Accounts"]
 
         print("-"*65, "\nUsage: Enter a website then enter a password for the site.")
         print("Type 's' to see your passwords, type 'd' to delete an existing entry"), print("-"*65)
+
         site = input("Enter your website: ")
 
         if site == 'd':
-            print(web_acc)
-            while True:
-                print("Type 'e' to exit")
-                get_pass = input("Enter an entry you would like to delete (type in website name): ")
+            try:
+                print(self.user_acc[user]["Web Accounts"])
+            except KeyError:
+                print("No entries created yet!")
+                sys.exit(1)
+            else:
+                while True:
+                    print("Type 'e' to exit")
+                    get_pass = input("Enter an entry you would like to delete (type in website name): ")
 
-                if get_pass == 'e':
-                    sys.exit(1)
-                
-                elif self.acc_check(get_pass["Web Accounts"]) == False:
-                    continue
+                    if get_pass == 'e':
+                        sys.exit(1)
 
-                else:
-                    self.acc_del(get_pass)
-                    break
+                    elif self.entry_check(user, "Web Accounts", get_pass) == False:
+                        continue
+
+                    else:
+                        self.entry_del(user, "Web Accounts", get_pass)
+                        break
 
         elif site == 's':
-            print(web_acc)
+            try:
+                print(self.user_acc[user]["Web Accounts"])
+            except KeyError:
+                print("No entries created yet!")
+                sys.exit(1)
+
         else:
             site_pass = self.create_pass()
-            self.user_pass[site] = site_pass
-            web_acc = self.user_pass
-            self.acc_save()
+            try:
+                self.user_acc[user]["Web Accounts"][site] = site_pass
+            except KeyError:
+                self.user_pass[site] = site_pass
+                self.user_acc[user]["Web Accounts"] = self.user_pass
+                self.acc_save()
+            else:
+                self.acc_save()
 
 # Main Function
 def main():
+    if not os.path.exists('account_file.json'):
+        make_file = open('account_file.json', 'w')
+        make_file.close()
+
     acc = account('account_file.json')
     acc.acc_load()
 
